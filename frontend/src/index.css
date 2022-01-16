@@ -1,0 +1,403 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;300;400;500;600;700&display=swap");
+
+:root {
+  --hd: #394356;
+  --p: #798293;
+  --bl: #0051ca;
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+* a:hover,
+* a {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--hd);
+
+  font-weight: 500;
+}
+
+.root {
+  padding: 30px 0;
+  width: 80%;
+  margin: auto;
+}
+
+header nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+header nav a.logo {
+  color: var(--bl);
+  font-size: 30px;
+  font-weight: 600;
+}
+
+header nav a.nav-link {
+  color: var(--hd);
+  font-size: 15px;
+}
+
+section.section1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: space-evenly;
+}
+
+section.section1 .images,
+section.section1 .texts {
+  width: 50%;
+}
+
+section.section1 .texts {
+  padding-top: 100px;
+}
+
+section.section1 .texts h1 {
+  font-size: 60px;
+}
+
+section.section1 .texts h5 {
+  color: var(--p);
+}
+
+.button,
+.button:focus {
+  background-color: var(--bl);
+  padding: 10px 25px;
+  color: white;
+  border-radius: 50px;
+  font-size: 15px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: white;
+  color: var(--bl);
+  border: 1px solid var(--bl);
+  font-weight: 600;
+  padding: 9px 25px;
+}
+
+section.section1 .images img {
+  width: 100%;
+  height: 100%;
+}
+
+.hr {
+  width: 200px;
+  display: table;
+  margin: auto;
+  height: 1px;
+  border-radius: 10px;
+  background: var(--p);
+}
+
+section.section2 {
+  margin: 70px 0;
+}
+
+section.section2 .top {
+  margin-bottom: 80px;
+}
+
+section.section2 .top * {
+  text-align: center;
+  width: 85%;
+  margin: auto;
+}
+
+section.section2 .top h2 {
+  margin-bottom: 10px;
+}
+
+section.section2 .top p {
+  color: var(--p);
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+section.section2 .bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 30px;
+}
+
+section.section2 .bottom .split h2 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+section.section2 .bottom .split p {
+  color: var(--p);
+  text-align: center;
+  font-size: 15px;
+}
+
+footer {
+  background: var(--hd);
+}
+
+footer .froot {
+  width: 80%;
+  margin: auto;
+  padding: 30px 0;
+}
+
+footer .froot h3 {
+  color: white;
+  margin-bottom: 12px;
+}
+
+footer .froot .footer-links a {
+  color: white;
+  font-size: 14px;
+}
+
+footer .froot .footer-links a:nth-child(2) {
+  margin-left: 30px;
+}
+
+footer .froot p {
+  margin-top: 50px;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+}
+
+@media (max-width: 991px) {
+  section.section1 .texts {
+    width: 100%;
+    text-align: center;
+    padding: 30px 0;
+  }
+
+  section.section1 .images {
+    height: auto;
+    width: 60%;
+  }
+
+  section.section2 .top * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .root {
+    padding: 30px 20px;
+    width: 100%;
+    margin: auto;
+  }
+
+  header nav a.logo {
+    font-size: 24px;
+  }
+
+  section.section1 .texts {
+    padding: 30px 0 40px;
+  }
+
+  section.section1 .images {
+    height: auto;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  section.section2 .top {
+    margin-bottom: 40px;
+  }
+
+  section.section2 .bottom {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+  }
+
+  section.section2 .bottom .split {
+    margin-bottom: 30px;
+  }
+
+  section.section2 {
+    margin: 50px 0;
+  }
+}
+
+/* upload page */
+main.upload {
+  min-height: 60vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main.upload section {
+  display: none;
+  margin: auto;
+}
+
+main.upload section.active {
+  display: table;
+}
+
+main.upload section h1 {
+  font-size: 30px;
+}
+
+main.upload section#upload .upload-block {
+  padding: 30px;
+  width: 280px;
+  height: 230px;
+  background-color: #f5f7f8;
+  margin: auto;
+  border-radius: 20px;
+  margin-top: 15px;
+  position: relative;
+}
+
+main.upload section#upload img {
+  width: 70px;
+  height: 70px;
+  margin: 10px auto;
+  display: table;
+}
+
+main.upload section#upload label.button {
+  display: table;
+  margin: auto;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+main.upload section#upload p {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+  color: var(--p);
+}
+
+main.upload section#upload .upload-block.dragged::after {
+  content: "Paste here";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--p);
+  font-size: 18px;
+}
+
+main.upload section#upload .upload-block.dragged * {
+  visibility: hidden;
+}
+
+main.upload section#upload .upload-block.uploaded::after {
+  content: "File uploaded!";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--bl);
+  font-size: 18px;
+}
+
+main.upload section#upload .upload-block.uploaded * {
+  visibility: hidden;
+}
+
+main.upload section#processing .svg {
+  margin: auto;
+  margin-top: 10px;
+  display: table;
+}
+
+main.upload section#completed {
+  width: 90%;
+}
+
+main.upload section#completed .tab-switcher a {
+  color: var(--hd);
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: color 0.1s ease-in;
+  cursor: pointer;
+}
+
+main.upload section#completed .tab-switcher a.active,
+main.upload section#completed .tab-switcher a:hover {
+  color: var(--bl);
+}
+
+main.upload section#completed .tab {
+  display: none;
+  margin-top: 2rem;
+}
+
+main.upload section#completed .tab.active {
+  display: block;
+}
+
+main.upload section#completed .tab textarea {
+  border-radius: 20px;
+  border: 1px solid var(--hd);
+  padding: 10px;
+  color: var(--p);
+  width: 700px;
+  height: 300px;
+  display: block;
+  margin-bottom: 20px;
+}
+
+main.upload section#completed .tab select {
+  display: block;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  width: 300px;
+  border: none;
+  n\background: white;
+}
+
+@media (max-width: 768px) {
+  main.upload section#completed {
+    width: 100%;
+    padding: 20px;
+  }
+
+  main.upload section#completed .tab textarea {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  main.upload section#completed {
+    width: 100%;
+    padding: 10px;
+  }
+  main.upload section#completed .tab-switcher a {
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  main.upload section#completed .tab textarea {
+    width: 100%;
+  }
+}
