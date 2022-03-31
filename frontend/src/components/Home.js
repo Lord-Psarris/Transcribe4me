@@ -34,27 +34,26 @@ export default class Home extends React.Component {
                         <section class="section2">
                             <div class="top">
                                 <h2>A fast and easy to use transcription service</h2>
-                                <p>Easily transcribe any video or audio file to text. Our in browser editor helps you edit the
+                                <p>Easily transcribe any short video or audio file to text. Our in browser editor helps you edit the
                                     text
-                                    for any errors. The texts are separated by timestmps (default is in minutes) but this can
+                                    for any errors. The texts are separated by timestamps (default is in minutes) but this can
                                     easily
-                                    be adjusted to suite your needs. Transcribe4me makes use of the DeepSpeech model for swift
-                                    transcriptions.</p>
+                                    be adjusted to suite your needs. The ideal video or audio files are usually 1-3 minutes long</p>
                             </div>
                             <div class="bottom">
                                 <div class="split">
                                     <h2>Upload</h2>
-                                    <p>Submit a video or audio file of any type</p>
+                                    <p>Submit a short video or audio file of any type</p>
                                 </div>
 
                                 <div class="split">
                                     <h2>Edit</h2>
-                                    <p>Review and edit transcripts with timestamps</p>
+                                    <p>Review and edit transcripts either plain or with timestamps</p>
                                 </div>
 
                                 <div class="split">
                                     <h2>Download</h2>
-                                    <p>Export your transcript as MS Word, PDF, TXT etc.</p>
+                                    <p>Export your transcript as SRT, TXT etc.</p>
                                 </div>
                             </div>
                         </section>

@@ -5,6 +5,6 @@ class MainConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'main'
 
-    def ready(self):
-        from .background import scheduled
-        scheduled.start()
+    # def ready(self):
+    #     from .background import scheduled
+    #     scheduled.start()

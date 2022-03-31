@@ -1,30 +1,58 @@
-
 import React from 'react';
 import '../../svg.css';
 
+// getting domain
+var DOMAIN;
+const location = window.location.hostname
+if (location.includes('localhost')) {
+    DOMAIN = 'http://localhost:8000'
+} else {
+    DOMAIN = '/backend'
+}
+const axios = require('axios')
+
 export default class Processing extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            percentageComplete: 5,
+            percentageText: 'Your file has been added to the queue'
+        }
+    }
+
+    async componentDidMount() {
+        var interval = setInterval(async () => {
+            var response = await axios.get(`${DOMAIN}/check-file-progress/${this.props.uniqueKey}`, { withCredentials: true })
+            var responseData = await response.data
+
+            if (responseData.fileStatus === 'started' && responseData.percentageComplete === 0) {
+                this.setState({ percentageText: 'Your file is being processed', percentageComplete: 20 })
+            }
+            else if (responseData.percentageComplete === 25) {
+                this.setState({ percentageText: 'Your file has been converted and is being transcribed', percentageComplete: 25 })
+            }
+            else if (responseData.percentageComplete === 75) {
+                this.setState({ percentageText: 'Almost done, note that the transcripts will be auto-deleted after 30 minutes', percentageComplete: 75 })
+            }
+            else if (responseData.fileStatus === 'completed' && responseData.percentageComplete === 100) {
+                clearInterval(interval)
+                this.setState({ percentageText: 'Transcription completed!', percentageComplete: 100 })
+                this.props.finishedProcessing(responseData.plainText, responseData.subtitle)
+            } else {
+                if (responseData.percentageComplete !== 0) {
+                    this.setState({ percentageComplete: responseData.percentageComplete })
+                }
+            }
+        }, 7500)
+    }
+
     render() {
 
         return (
             <section id="processing" class="active">
-                <h1>Processing</h1>
-                <div class="svg">
-                    <svg class="tea" width="40" height="91" viewbox="0 0 37 48" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M27.0819 17H3.02508C1.91076 17 1.01376 17.9059 1.0485 19.0197C1.15761 22.5177 1.49703 29.7374 2.5 34C4.07125 40.6778 7.18553 44.8868 8.44856 46.3845C8.79051 46.79 9.29799 47 9.82843 47H20.0218C20.639 47 21.2193 46.7159 21.5659 46.2052C22.6765 44.5687 25.2312 40.4282 27.5 34C28.9757 29.8188 29.084 22.4043 29.0441 18.9156C29.0319 17.8436 28.1539 17 27.0819 17Z"
-                            stroke="var(--hd)" stroke-width="2"></path>
-                        <path
-                            d="M29 23.5C29 23.5 34.5 20.5 35.5 25.4999C36.0986 28.4926 34.2033 31.5383 32 32.8713C29.4555 34.4108 28 34 28 34"
-                            stroke="var(--hd)" stroke-width="2"></path>
-                        <path id="teabag" fill="var(--hd)" fill-rule="evenodd" clip-rule="evenodd"
-                            d="M16 25V17H14V25H12C10.3431 25 9 26.3431 9 28V34C9 35.6569 10.3431 37 12 37H18C19.6569 37 21 35.6569 21 34V28C21 26.3431 19.6569 25 18 25H16ZM11 28C11 27.4477 11.4477 27 12 27H18C18.5523 27 19 27.4477 19 28V34C19 34.5523 18.5523 35 18 35H12C11.4477 35 11 34.5523 11 34V28Z">
-                        </path>
-                        <path id="steamL" d="M17 1C17 1 17 4.5 14 6.5C11 8.5 11 12 11 12" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" stroke="var(--hd)"></path>
-                        <path id="steamR" d="M21 6C21 6 21 8.22727 19 9.5C17 10.7727 17 13 17 13" stroke="var(--hd)"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
+                <h1 styke={{ background: 'pink' }}>Processing</h1>
+                <div class="progress-bar">
+                    <div class="progress" style={{ width: `${this.state.percentageComplete}%` }}>{this.state.percentageComplete}%</div>
                 </div>
             </section>
         )

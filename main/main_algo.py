@@ -1,12 +1,13 @@
 # importing libraries
-import speech_recognition as sr
 import os
+import shutil
+import subprocess
+import time
+
+import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence, detect_nonsilent
 from pydub.utils import make_chunks
-import time
-import shutil
-import subprocess
 
 
 def get_timestamp(seconds):
@@ -55,9 +56,9 @@ def get_subtitles(path, folder_name="audio-chunks"):
         audio_chunk.export(chunk_filename, format="wav")
 
         # recognize the chunk
-        # ensure chunk length is not more than 5s
+        # ensure chunk length is not more than 10s
         file_length = int(audio_chunk.duration_seconds)
-        if file_length > 6:
+        if file_length > 10:
             sub_chunks = make_chunks(audio_chunk, 6000)
 
             # get current stamps
@@ -103,8 +104,8 @@ def get_subtitles(path, folder_name="audio-chunks"):
                 try:
                     text = r.recognize_google(audio_listened)
                 except sr.UnknownValueError:
-                    # pass
-                    print("(Unknown Statement)")
+                    pass
+                    # print("(Unknown Statement)")
                 else:
                     text = f"{text.capitalize()}. "
 
@@ -114,12 +115,15 @@ def get_subtitles(path, folder_name="audio-chunks"):
                     whole_text += f'{count}\n {start} --> {end} \n {text} \n\n'
                     count += 1
 
-    # return the text for all chunks detected and remove the directory
-    shutil.rmtree(folder_name)
     return whole_text
 
 
 def get_plain_text(path, folder_name="audio-chunks"):
+    """
+    Splitting the large audio file into chunks
+    and apply speech recognition on each of these chunks
+    """
+
     # open the audio file using pydub
     sound = AudioSegment.from_wav(path)
     # split audio sound where silence is 700 miliseconds or more and get chunks
@@ -131,15 +135,18 @@ def get_plain_text(path, folder_name="audio-chunks"):
                               # keep the silence for 1 second, adjustable as well
                               keep_silence=500,
                               )
+
     # create a directory to store the audio chunks
     if not os.path.isdir(folder_name):
         os.mkdir(folder_name)
+
     whole_text = ""
+
     # process each chunk
     for i, audio_chunk in enumerate(chunks, start=1):
         # export audio chunk and save it in
         # the `folder_name` directory.
-        chunk_filename = os.path.join(folder_name, f"chunk{i}.wav")
+        chunk_filename = os.path.join(folder_name, f"chunk__{i}.wav")
         audio_chunk.export(chunk_filename, format="wav")
         # recognize the chunk
         with sr.AudioFile(chunk_filename) as source:
@@ -148,21 +155,18 @@ def get_plain_text(path, folder_name="audio-chunks"):
             try:
                 text = r.recognize_google(audio_listened)
             except sr.UnknownValueError as e:
-                print("Error:", str(e))
+                pass
+                # print("Error:", str(e))
             else:
                 text = f"{text.capitalize()}. "
                 whole_text += text
 
-    # return the text for all chunks detected
-    shutil.rmtree(folder_name)
     return whole_text
 
 
 def convert_to_wav(input_file, output_name):
+    """
+    Converting the file to wav so that it can work with soeach reccognition
+    """
     subprocess.call(['ffmpeg', '-i', input_file,
                      output_name])
-
-# output_name = 'output.wav'
-# convert_to_wav('movie.mp4', output_name)
-# print(get_subtitles('output.wav'))
-# print(get_plain_text('output.wav'))

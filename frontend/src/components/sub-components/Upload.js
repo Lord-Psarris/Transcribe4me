@@ -26,9 +26,9 @@ export default class Upload extends React.Component {
             if (verifyFormat(file.name)) {
                 uploadBlock.addClass('uploaded')
 
-                setTimeout(function () {
-                    uploadBlock.removeClass('uploaded')
-                }, 4000)
+                // setTimeout(function () {
+                //     uploadBlock.removeClass('uploaded')
+                // }, 4000)
 
                 this.setState({ errorMessage: '' })
                 this.props.handleUploadFile(file)

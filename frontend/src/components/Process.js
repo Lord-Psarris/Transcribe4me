@@ -9,13 +9,29 @@ import Processing from './sub-components/Processing'
 import Completed from './sub-components/Completed'
 
 // getting domain
+var DOMAIN;
 const location = window.location.hostname
 if (location.includes('localhost')) {
-    var DOMAIN = 'http://localhost:8000'
+    DOMAIN = 'http://localhost:8000'
 } else {
-    var DOMAIN = ''
+    DOMAIN = '/backend'
 }
-
+const axios = require('axios')
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 export default class Process extends React.Component {
     constructor(props) {
@@ -30,44 +46,43 @@ export default class Process extends React.Component {
         }
     }
 
-    handleFileUpload = (file) => {
-        this.setState({ currentTab: 'processing' })
+    handleFileUpload = async (file) => {
+        var formData = new FormData()
+        var cookie = getCookie('csrftoken');
 
-        var newFormData = new FormData()
-        newFormData.append('file', file)
+        formData.append('file', file)
+        formData.append("csrfmiddlewaretoken", cookie)
 
-        // fetch request
-        fetch(DOMAIN + "/post-file/", {
-            method: "POST",
-            body: newFormData
-        })
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ uniqueKey: data.data })
-            })
+        var response = await axios.post(`${DOMAIN}/upload-file/`, formData, { withCredentials: true })
+        var responseData = await response.data
 
-        var interval = setInterval(() => {
-            fetch(DOMAIN + "/check-file/", {
-                method: "POST",
-                body: this.state.uniqueKey
-            })
-                .then(res => res.json())
-                .then(data => {
-                    let nData = data.data
-                    console.log(data)
-                    if (data.completed) {
-                        this.setState({ currentTab: 'completed', responseText: nData })
-                        clearInterval(interval)
-                    }
+        this.setState({ uniqueKey: responseData.uniqueId, currentTab: 'processing' })
+    }
 
-                })
-        }, 10000)
+    hasFinishedProcessingFile = (plainText, subtitle) => {
+        this.setState({ currentTab: 'completed', responseText: { sub: subtitle, plain: plainText } })
+    }
+
+    async componentDidMount() {
+        var response = await axios.get(`${DOMAIN}/check-if-has-file/`, { withCredentials: true })
+        var responseData = await response.data
+        console.log(responseData)
+
+        if (responseData.hasFile) {
+            // ask if the user wants details on prev file
+            var confirmQuestion = `You already uploaded a file (${responseData.file}), do you want to proceed with processing it?`
+            if (window.confirm(confirmQuestion)) {
+                // OK
+                this.setState({ uniqueKey: responseData.uniqueId, currentTab: 'processing' })
+            }
+        }
+
     }
 
     render() {
         const currentTab = (
             this.state.currentTab == 'upload' ? <Upload handleUploadFile={this.handleFileUpload} /> :
-                this.state.currentTab == 'processing' ? <Processing /> : <Completed values={this.state.responseText} />
+                this.state.currentTab == 'processing' ? <Processing uniqueKey={this.state.uniqueKey} finishedProcessing={this.hasFinishedProcessingFile} /> : <Completed values={this.state.responseText} />
         )
 
         return (
