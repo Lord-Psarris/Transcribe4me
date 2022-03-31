@@ -6,3 +6,4 @@ pydub==0.23.1
 django_heroku
 gunicorn
 SpeechRecognition
+waitress
