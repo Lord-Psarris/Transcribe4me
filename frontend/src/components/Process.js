@@ -14,7 +14,7 @@ const location = window.location.hostname
 if (location.includes('localhost')) {
     DOMAIN = 'http://localhost:8000'
 } else {
-    DOMAIN = '/backend'
+    DOMAIN = ''
 }
 const axios = require('axios')
 function getCookie(name) {
