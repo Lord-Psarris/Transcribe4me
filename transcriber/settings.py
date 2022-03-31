@@ -76,14 +76,19 @@ WSGI_APPLICATION = 'transcriber.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'das73rfmolje8l',
-        'HOST': 'ec2-54-204-28-187.compute-1.amazonaws.com',
-        'PORT': 5432,
-        'USER': 'lgkspavsshtwln',
-        'PASSWORD': '4786d3c775ec5b4e8966d18e326420256fcd87155b8c085634650a953887797b',
-    }
+    'default':
+        {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    #     {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'das73rfmolje8l',
+    #     'HOST': 'ec2-54-204-28-187.compute-1.amazonaws.com',
+    #     'PORT': 5432,
+    #     'USER': 'lgkspavsshtwln',
+    #     'PASSWORD': '4786d3c775ec5b4e8966d18e326420256fcd87155b8c085634650a953887797b',
+    # }
 }
 
 # Password validation
@@ -142,7 +147,6 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Nairobi'
-
 
 # for herokku
 django_heroku.settings(locals())

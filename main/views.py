@@ -4,8 +4,6 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from .models import FileUpload
 import os
-import shutil
-import json
 from . import tasks
 
 
@@ -34,6 +32,7 @@ def check_if_has_file(request):
     return JsonResponse({'hasFile': False}, status=200)
 
 
+@csrf_exempt
 def receive_files(request):
     if request.FILES:
         # getting ip address
@@ -70,6 +69,7 @@ def receive_files(request):
     return JsonResponse({'data': None}, status=200)
 
 
+@csrf_exempt
 def check_file_progress(request, unique_key):
     file_upload = FileUpload.objects.filter(unique_key=unique_key).first()
     if file_upload is not None:
