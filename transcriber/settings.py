@@ -148,5 +148,5 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Nairobi'
 
-# for herokku
+# for heroku
 django_heroku.settings(locals())
